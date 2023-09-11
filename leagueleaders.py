@@ -11,15 +11,13 @@ class LeagueLeaders:
 
         self.category = category
         self.year = year
-        self.url = f'https://www.nfl.com/stats/player-stats/category/{self.category}/{self.year}/reg/all/{self.category}yards/desc'
+        self.url = f'https://www.pro-football-reference.com/years/{year}/{category}.htm'
 
-        print(self.url)
+    def get_data(self):
         service = Service(ChromeDriverManager().install())
         option = Options()
         option.add_argument('headless')
         self.driver = webdriver.Chrome(service=service, options=option)
-
-    def get_data(self):
         self.driver.get(self.url)
 
         site = self.driver.page_source
@@ -29,17 +27,21 @@ class LeagueLeaders:
         #Obtendo tabela
         table = soup.find(
             'table',
-            class_='d3-o-table d3-o-table--detailed d3-o-player-stats--detailed d3-o-table--sortable')
+            class_='per_match_toggle sortable stats_table now_sortable sticky_table eq2 re2 le2')
 
         #Cabeçalho
-        headers = table.find_all(
-            'th',
-            class_='header')
+        thead = table.find(
+            'thead'
+            )
+        
+        headers = thead.find_all(
+            'th'
+        )
 
-        header = []
+        cols = []
 
         for head in headers:
-            header.append(head.get_text().replace('\n', ''))
+            cols.append(head.get_text())
 
         #Jogadores
 
@@ -61,11 +63,11 @@ class LeagueLeaders:
             player_data = []
 
             for stat in data:
-                player_data.append(stat.get_text().replace('\n', '').replace(' ', ''))       
+                player_data.append(stat.get_text())       
             
             data_list.append(player_data)
 
-        df = pd.DataFrame(data_list, columns=header)
+        df = pd.DataFrame(data_list, columns=cols[1:])
 
         return df
 
@@ -73,5 +75,4 @@ class LeagueLeaders:
 
 if __name__ == "__main__":
     league_leaders = LeagueLeaders('passing', '2023')
-    league_leaders.close_driver()
 
