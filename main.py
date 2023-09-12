@@ -1,11 +1,7 @@
 from leagueleaders import LeagueLeaders
+from players import Players
 import pandas as pd
 
-print('Category (passing/rushing/receiving)')
-category = input()
-print('Year (1970-2023)')
-year = input()
-df = LeagueLeaders(category, year).get_data()
+df = Players('Russell Wilson').get_data()
 
 print(df)
-
