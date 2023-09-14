@@ -3,16 +3,15 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
-import requests as re
 import pandas as pd
 
 class LeagueLeaders:
     def __init__(self, category, year):
-        self.category = category
+        self.category = category.lower()
         self.year = year
         self.url = f'https://www.pro-football-reference.com/years/{year}/{category}.htm'
 
-    def get_data(self):
+    def get_dataframe(self):
         service = Service(ChromeDriverManager().install())
         option = Options()
         option.add_argument('headless')
@@ -62,7 +61,7 @@ class LeagueLeaders:
             player_data = []
 
             for stat in data:
-                player_data.append(stat.get_text())       
+                player_data.append(stat.get_text())
             
             data_list.append(player_data)
 
@@ -70,24 +69,7 @@ class LeagueLeaders:
 
         return df
 
-        self.driver.quit() 
-
-class LeagueLeaders2:
-    def __init__(self, category, year):
-        self.category = category.lower()
-        self.year = year
-        self.url = f'https://www.pro-football-reference.com/years/{self.year}/{self.category}.htm'
-
-    def get_data(self):
-        site = re.get(self.url)
-        if str(site.status_code)[0] == '2':
-            table = pd.read_html(self.url)[0]
-
-            return table
-
-            self.driver.quit()
-        else:
-            print("Dados não encontrados")
+        self.driver.quit()
 
 
 if __name__ == "__main__":

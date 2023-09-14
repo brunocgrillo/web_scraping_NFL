@@ -1,10 +1,11 @@
-from leagueleaders.leagueleaders import LeagueLeaders, LeagueLeaders2
+from leagueleaders.leagueleaders import LeagueLeaders
+from leagueleaders.leagueleaders2 import LeagueLeaders2
 import sys
 
 if sys.version_info.major != 3:
     print('Versão do python não compatível com o pacote')
 
-libs_leagueleaders = ['selenium', 'webdriver_manager', 'bs4']
+libs_leagueleaders = ['selenium', 'webdriver_manager', 'bs4', 'pandas']
 
 for lib in libs_leagueleaders:
     try:
