@@ -74,9 +74,9 @@ class LeagueLeaders:
 
 class LeagueLeaders2:
     def __init__(self, category, year):
-        self.category = category
+        self.category = category.lower()
         self.year = year
-        self.url = f'https://www.pro-football-reference.com/years/{year}/{category}.htm'
+        self.url = f'https://www.pro-football-reference.com/years/{self.year}/{self.category}.htm'
 
     def get_data(self):
         site = re.get(self.url)

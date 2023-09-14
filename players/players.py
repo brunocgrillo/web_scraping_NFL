@@ -22,7 +22,6 @@ class Players:
             'h1'
             )
         page_verify = find_name.get_text()
-        print(self.url)
         if self.player_name != page_verify.strip():
             for x in url_final[1:]:
                 self.url = f'https://www.pro-football-reference.com/players/{self.url_name[0]}/{self.url_name}{x}.htm'
@@ -40,11 +39,25 @@ class Players:
             if self.player_name != page_verify.strip():
                 print('Jogador não encontrado')
             else:
-                df = pd.read_html(self.url)[1]
+                if self.category == "Regular Season":
+                    df = pd.read_html(self.url)[0]
+                    df = df.replace(['+', '*'], '')
+                elif self.category == "Playoffs":
+                    df = pd.read_html(self.url)[1]
+                    df = df.replace(['+', '*'], '')
+                else:
+                    print("Categoria não identificada. (Opções: Regular Season, Playoffs)")
 
                 return df
         else:
-            df = pd.read_html(self.url)[1]
+            if self.category == "Regular Season":
+                df = pd.read_html(self.url)[0]
+                df = df.replace(['+', '*'], '')
+            elif self.category == "Playoffs":
+                df = pd.read_html(self.url)[1]
+                df = df.replace(['+', '*'], '')
+            else:
+                print("Categoria não identificada. (Opções: Regular Season, Playoffs)")
 
             return df
 if __name__ == '__main__':

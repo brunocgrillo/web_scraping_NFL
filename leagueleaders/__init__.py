@@ -1,4 +1,4 @@
-from leagueleaders import LeagueLeaders2
+from leagueleaders.leagueleaders import LeagueLeaders, LeagueLeaders2
 import sys
 
 if sys.version_info.major != 3:
