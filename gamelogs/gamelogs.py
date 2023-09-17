@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 import json
+import datetime
 
 class TeamGameLogs:
     def __init__(self, team, year):
@@ -28,8 +29,13 @@ class TeamGameLogs:
             print('Problema na coleta de dados')
             return
         else:
-            table = pd.read_html(self.url)[1]
-            return table
+            date_year = datetime.datetime.now()
+            if self.year == date_year.year:
+                table = pd.read_html(self.url)[2]
+                return table
+            else:
+                table = pd.read_html(self.url)[1]
+                return table
 
     def get_json(self):
         site = requests.get(self.url)
@@ -37,7 +43,14 @@ class TeamGameLogs:
             print('Problema na coleta de dados')
             return
         else:
-            table = pd.read_html(self.url)[1]
-            data_dict = table.to_dict(orient='records')
-            new_data_dict = [dict(((key[1], value) for key, value in data.items())) for data in data_dict]
-            return json.dumps(new_data_dict, indent=1)
+            date_year = datetime.datetime.now()
+            if self.year == date_year.year:
+                table = pd.read_html(self.url)[2]
+                data_dict = table.to_dict(orient='records')
+                new_data_dict = [dict(((key[1], value) for key, value in data.items())) for data in data_dict]
+                return json.dumps(new_data_dict, indent=1)
+            else:
+                table = pd.read_html(self.url)[1]
+                data_dict = table.to_dict(orient='records')
+                new_data_dict = [dict(((key[1], value) for key, value in data.items())) for data in data_dict]
+                return json.dumps(new_data_dict, indent=1)

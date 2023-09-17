@@ -10,4 +10,4 @@ for lib in libs_players:
     try:
         __import__(lib)
     except:
-        print(f'Biblioteca {lib}, necessária para o primeiro módulo, não instalada')
+        print(f'Biblioteca {lib}, necessária para o módulo Players, não instalada')
