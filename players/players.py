@@ -22,7 +22,6 @@ class Players:
         find_name= soup.find(
             'h1'
             )
-        print(self.url)
         page_verify = find_name.get_text()
         if self.player_name != page_verify.strip():
             for x in url_final[1:]:

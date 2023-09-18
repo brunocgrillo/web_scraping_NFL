@@ -6,7 +6,7 @@ import datetime
 class TeamGameLogs:
     def __init__(self, team, year):
         self.team = team.strip().lower()
-        self.year = year.strip()
+        self.year = str(year).strip()
         teams = ['cardinals', 'falcons', 'ravens', 'bills', 'panthers', 'bears', 'bengals', 'browns', 'cowboys',
                       'broncos', 'lions', 'texans', 'packers', 'colts', 'jaguars', 'chiefs', 'raiders', 'chargers', 'rams',
                       'dolphins', 'vikings', 'patriots', 'saints', 'giants', 'jets', 'eagles', 'steelers', '49ers', 'seahawks',
@@ -32,9 +32,13 @@ class TeamGameLogs:
             date_year = datetime.datetime.now()
             if self.year == date_year.year:
                 table = pd.read_html(self.url)[2]
+                table.columns = table.columns.droplevel(0) + "_" + table.columns.get_level_values(0)
+                table.columns = table.columns.str.split('_U').str[0]
                 return table
             else:
                 table = pd.read_html(self.url)[1]
+                table.columns = table.columns.droplevel(0) + "_" + table.columns.get_level_values(0)
+                table.columns = table.columns.str.split('_U').str[0]
                 return table
 
     def get_json(self):
@@ -46,11 +50,13 @@ class TeamGameLogs:
             date_year = datetime.datetime.now()
             if self.year == date_year.year:
                 table = pd.read_html(self.url)[2]
+                table.columns = table.columns.droplevel(0) + "_" + table.columns.get_level_values(0)
+                table.columns = table.columns.str.split('_U').str[0]
                 data_dict = table.to_dict(orient='records')
-                new_data_dict = [dict(((key[1], value) for key, value in data.items())) for data in data_dict]
-                return json.dumps(new_data_dict, indent=1)
+                return json.dumps(data_dict, indent=1)
             else:
                 table = pd.read_html(self.url)[1]
+                table.columns = table.columns.droplevel(0) + "_" + table.columns.get_level_values(0)
+                table.columns = table.columns.str.split('_U').str[0]
                 data_dict = table.to_dict(orient='records')
-                new_data_dict = [dict(((key[1], value) for key, value in data.items())) for data in data_dict]
-                return json.dumps(new_data_dict, indent=1)
+                return json.dumps(data_dict, indent=1)

@@ -5,7 +5,7 @@ import json
 class LeagueLeaders2:
     def __init__(self, category, year):
         self.category = category.lower()
-        self.year = year
+        self.year = str(year).strip()
         self.url = f'https://www.pro-football-reference.com/years/{self.year}/{self.category}.htm'
 
     def get_dataframe(self):

@@ -8,7 +8,7 @@ import pandas as pd
 class LeagueLeaders:
     def __init__(self, category, year):
         self.category = category.lower()
-        self.year = year
+        self.year = str(year).strip()
         self.url = f'https://www.pro-football-reference.com/years/{year}/{category}.htm'
 
     def get_dataframe(self):
